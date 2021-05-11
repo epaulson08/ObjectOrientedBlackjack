@@ -11,7 +11,7 @@ public abstract class Player {
 		this.hand = hand;
 	}
 	
-// getters and setters
+// Get/set:
 	public boolean isWinner() {
 		return winner;
 	}
@@ -35,6 +35,5 @@ public abstract class Player {
 	public void setHand(Hand hand) {
 		this.hand = hand;
 	}
-// end getters and setters
 
-} // close class
+}

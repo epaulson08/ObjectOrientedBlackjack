@@ -5,30 +5,28 @@ import java.util.Collections;
 import java.util.List;
 
 public class Deck {
-	private List<Card> cardList;
+	private List<Card> cards;
 
 	public Deck() {
-		cardList = new ArrayList<>();
-
+		this.cards = new ArrayList<>();
 		for (Rank r : Rank.values()) {
 			for (Suit s : Suit.values()) {
 				Card card = new Card(r, s);
-				cardList.add(card);
-			} // close inner for-each
-		} // close outer for-each
-	} // close Deck()
+				this.cards.add(card);
+			}
+		}
+	}
 
 	public int checkDeckSize() {
-		return cardList.size();
+		return this.cards.size();
 	}
 
 	public Card getCard() {
-		return cardList.remove(0);
+		return this.cards.remove(0);
 	}
 
 	public void shuffle() {
-		Collections.shuffle(cardList);
+		Collections.shuffle(cards);
 	}
-
-
-} // close class
+	
+}

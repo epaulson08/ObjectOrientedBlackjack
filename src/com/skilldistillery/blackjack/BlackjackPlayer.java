@@ -11,10 +11,4 @@ public class BlackjackPlayer extends Player {
 		return (BlackjackHand)(this.getHand());
 	}
 	
-	public void displayCards() {
-		this.getHand().showAllCards();
-		this.getHand().printCardArtHorizontal();
-		this.getBlackjackHand().showSum();		
-	}
-	
 }

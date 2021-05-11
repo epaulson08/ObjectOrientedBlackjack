@@ -1,6 +1,7 @@
 package com.skilldistillery.cards;
 
 public class Card {
+	
 	private Rank rank;
 	private Suit suit;
 	private String displayChar;
@@ -12,34 +13,21 @@ public class Card {
 		this.suit = suit;
 		this.symbol = suit.getSymbol();
 	}
-
+	
 	public int getValue() {
 		return rank.getValue();
 	}
-
+	
 	public Rank getRank() {
 		return rank;
 	}
 	
-	public void printOneCardArt() {
-		System.out.println();
-		System.out.println("xxxxxxx");
-		System.out.println("x  " + this.displayChar + "  x");
-		System.out.println("x  " + this.symbol + "  x");
-		System.out.println("x  " + this.displayChar + "  x");
-		System.out.println("xxxxxxx");
-		System.out.println();
+	public String getDisplayChar() {
+		return this.displayChar;
 	}
 	
-	public String[] getLinesForCardArt() {
-		String [] lines = new String [5];
-		lines[0] = "xxxxxxx";
-		lines[1] = "x  " + this.displayChar + "  x";
-		lines[2] = "x  " + this.symbol + "  x";
-		lines[3] = "x  " + this.displayChar + "  x";
-		lines[4] = "xxxxxxx";
-
-		return lines;
+	public char getSymbol() {
+		return this.symbol;
 	}
 
 	@Override

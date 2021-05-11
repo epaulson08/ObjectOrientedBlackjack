@@ -1,33 +1,17 @@
 package com.skilldistillery.blackjack;
 
-import com.skilldistillery.cards.Deck;
-
 public class BlackjackGame {
-	private Deck deck;
 	private BlackjackDealer dealer;
-	private BlackjackPlayer player1;
-	private Menu menu;
+	private BlackjackPlayer player;
+	private UserInterface ui;
 	private boolean gameKeepsGoing = true;
 	private WinStateDecider check;
-	private boolean debug = false;
 
-	public BlackjackGame() {
-		Menu menu = new Menu();
-		this.menu = menu;
-	}
-
-	public BlackjackGame(Menu menu) {
-		this.menu = menu;
-		this.deck = new Deck();
-		deck.shuffle();
-		dealer = new BlackjackDealer(deck);
-		player1 = new BlackjackPlayer();
-		check = new WinStateDecider(dealer, player1);
-		if (debug) {
-			System.out.println("********************************************");
-			System.out.println("WARNING: BlackjackGame.java DEBUG MODE IS ON");
-			System.out.println("********************************************");
-		}
+	public BlackjackGame(UserInterface ui) {
+		this.ui = ui;
+		dealer = new BlackjackDealer();
+		player = new BlackjackPlayer();
+		check = new WinStateDecider();
 	}
 
 	public void play() {
@@ -48,176 +32,115 @@ public class BlackjackGame {
 
 	}
 
-//////////
 	public void turn1() {
-		if (debug)
-			System.out.println("\nDEBUG: TURN 1\n");
-
-		// Turn 1: Deal to player. If player gets 21, player wins.
-
+		dealer.makeNewDeck();
+		dealer.shuffleDeck();
+		
 		System.out.println("Dealer deals to player: ");
-		dealer.dealPlayerHand(player1);
+		dealer.dealHandToPlayer(player);
 
-		player1.displayCards();
+		ui.displayHand(player.getBlackjackHand());
+		ui.pause();
 
-		menu.pause();
-
-		this.gameKeepsGoing = check.isPlayer1GameOver();
+		gameKeepsGoing = !check.isPlayerGameOver(player);
 		if (!gameKeepsGoing) {
-			check.announceWinner(false); // false is tag to designate not a tie
+
 		}
 	}
-//////////
 
-//////////	
 	public void turn2() {
-		if (debug)
-			System.out.println("\nDEBUG: TURN 2\n");
+		System.out.println("Dealer deals to self:");
+		dealer.dealHandToSelf();
 
-		// Turn 2: Deal to dealer. If dealer gets 21, dealer wins.
-		// Note the logic is same as Turn 1.
-		dealer.dealSelfHand();
-		dealer.displayCardsExceptFirst();
+		ui.displayHandConcealFirstCard(dealer.getBlackjackHand());
+		ui.pause();
 
-		menu.pause();
-
-		this.gameKeepsGoing = check.isDealerGameOver();
+		gameKeepsGoing = !check.isDealerGameOver(dealer);
 		if (!gameKeepsGoing) {
-			check.announceWinner(false);
+			endGame();
 		}
-	} // close dealerTurn1()
-//////////
+	}
 
-//////////
 	public void turn3() {
-		if (debug)
-			System.out.println("DEBUG: TURN 3");
-
-		// Turn 3: Player decides whether to hit.
-		boolean playerHits = menu.doesPlayerWantToHit();
-
-		// Turn 3: If player hits:
+		boolean playerHits = true;
+		
 		while (playerHits) {
-			if (debug)
-				System.out.println("\nDEBUG: ENTERING TURN 3 while(playerHits)\n");
+			playerHits = ui.promptHit();
 
-			dealer.dealHit(player1.getBlackjackHand());
+			dealer.dealHit(player.getBlackjackHand());
 
 			System.out.println("\n\nYou hit. Your hand now: ");
-			player1.displayCards();
+			ui.displayHand(player.getBlackjackHand());
+			ui.pause();
 
-			menu.pause();
-
-			this.gameKeepsGoing = check.isPlayer1GameOver();
-			if (debug)
-				System.out.println("DEBUG: gameKeepsGoing is: " + gameKeepsGoing);
+			this.gameKeepsGoing = !check.isPlayerGameOver(player);
 
 			if (!gameKeepsGoing) {
-				check.announceWinner(false);
-				break;
-			} // exit here if player gets == 21 and wins, or > 21 and loses
-
-			else {
-				playerHits = menu.doesPlayerWantToHit();
-				// Return to top of while loop if player hits again
-				// Exit while loop if player doesn't hit again
-			}
-		} // close while(playerHits)
-
-		// Player is now done hitting. Possible states:
-		// Player == 21 and wins, gameKeepsGoing false
-		// Player > 21 and loses, gameKeepsGoing false
-		// Player < 21 and < dealer: player loses
-		// Player < 21 and > dealer: go on
-		// Player < 21 and == dealer: tie unless dealer hits -deal with this in turn 4
-
-		if (gameKeepsGoing) {
-			System.out.println("\n\nYou stay. ");
-			menu.pause();
-
-			int flag = check.compareHands(); // -1 for dealer > player, 0 tie, 1 dealer < player
-			if (flag == 0) {
-				check.announceWinner(true); // This logic is a little oversimplified; maybe dealer hits on a tie
-			}
-
-			if (flag == -1) {
-				dealer.setWinner(true);
-				check.announceWinner(false);
-				this.gameKeepsGoing = false;
-			}
-		} // close if
-
-	} // close turn3()
-//////////
-
-//////////
-	public void turn4() {
-		if (debug)
-			System.out.println("\nDEBUG: TURN 4\n");
-
-		System.out.println("Dealer reveals cards: ");
-		dealer.displayAllCards();
-		menu.pause();
-
-		// if dealer must hit:
-		while (gameKeepsGoing && dealer.mustHit()) { // i.e. while dealer sum < 17
-			if (debug) {
-				System.out.println("\nDEBUG: ENTERED TURN 4 WHILE LOOP");
-				System.out.println("gameKeepsGoing IS: " + gameKeepsGoing);
-				System.out.println("dealer.mustHit() IS: " + dealer.mustHit() + "\n");
-			}
-			dealer.hitSelf();
-			dealer.displayAllCards();
-			menu.pause();
-
-			gameKeepsGoing = check.isDealerGameOver(); // check if dealer == 21 or > 21
-			if (!gameKeepsGoing)
-				check.announceWinner(false);
-
-		} // end while loop
-			// if gameKeepsGoing = false: exit loop
-			// if gameKeepsGoing = true AND dealer.mustHit() = false: exit loop
-
-		if (debug)
-			System.out.println("DEBUG: EXITED TURN 4 while (dealer.mustHit())");
-
-		if (debug)
-			System.out.println("DEBUG: dealer.mustHit() is: " + dealer.mustHit());
-		if (!dealer.mustHit()) {
-			int flag = check.compareHands();
-			if (debug)
-				System.out.println("DEBUG: int flag = check.compareHands() is: " + check.compareHands());
-
-			if (flag == 0) {
-				check.announceWinner(true);
-			} else if (flag == 1) {
-				player1.setWinner(true);
-				check.announceWinner(false);
-			} else if (flag == -1 && dealer.getBlackjackHand().calculateSum() <= 21) {
-				dealer.setWinner(true);
-				check.announceWinner(false);
-			} else if (flag == -1 && dealer.getBlackjackHand().calculateSum() > 21) {
-				dealer.setLoser(true);
-				check.announceWinner(false);
+				endGame();
+				return;
+			} else {
+				playerHits = ui.promptHit();
 			}
 		}
-	}// close turn4()
-//////////
+
+		System.out.println("\n\nYou stay. ");
+		ui.pause();
+
+		int flag = check.compareHands(dealer, player); // -1 for dealer > player, 0 tie, 1 dealer < player
+		if (flag == 0) {
+			ui.announceWinner(0, player.getBlackjackHand(), dealer.getBlackjackHand());
+			this.gameKeepsGoing = false;
+		}
+		if (flag == -1) {
+			ui.announceWinner(-1, player.getBlackjackHand(), dealer.getBlackjackHand());
+			this.gameKeepsGoing = false;
+		}
+	}
+
+	public void turn4() {
+
+		System.out.println("Dealer reveals cards: ");
+
+		ui.displayHand(dealer.getBlackjackHand());
+		ui.pause();
+
+		while (gameKeepsGoing && dealer.mustHit()) {
+			dealer.hitSelf();
+
+			ui.displayHand(dealer.getBlackjackHand());
+			ui.pause();
+
+			gameKeepsGoing = check.isDealerGameOver(dealer);
+			if (!gameKeepsGoing)
+				endGame();
+		}
+
+		if (!dealer.mustHit()) {
+			int largerHand = check.compareHands(dealer, player);
+			if (largerHand == -1) {
+				if (dealer.getBlackjackHand().calculateSum() <= 21) {
+					ui.announceWinner(-1, player.getBlackjackHand(), dealer.getBlackjackHand());
+				} else {
+					ui.announceWinner(1, player.getBlackjackHand(), dealer.getBlackjackHand());
+				}
+			} else {
+				ui.announceWinner(largerHand, player.getBlackjackHand(), dealer.getBlackjackHand());
+			}
+		}
+		
+	}
+
+	private void endGame() {
+		int winnerFlag = check.determineWinner(dealer, player);
+		ui.announceWinner(winnerFlag, player.getBlackjackHand(), dealer.getBlackjackHand());
+	}
 
 	public void resetGame() {
 		dealer.setLoser(false);
 		dealer.setWinner(false);
-		player1.setLoser(false);
-		player1.setWinner(false);
+		player.setLoser(false);
+		player.setWinner(false);
 		this.gameKeepsGoing = true;
 	}
 
-	public void setGameKeepsGoing(boolean b) {
-		gameKeepsGoing = b;
-	}
-
-	public boolean getGameKeepsGoing() {
-		return this.gameKeepsGoing;
-	}
-
-} // close class
+}

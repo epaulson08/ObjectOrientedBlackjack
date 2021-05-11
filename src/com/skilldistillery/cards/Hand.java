@@ -4,51 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Hand {
-	private List<Card> cardsInHand = new ArrayList<>();
+
+	private List<Card> cards = new ArrayList<>();
 
 	public Hand() {
 	}
 
-// start special behavior
-	public void showAllButFirstCard() {
-		System.out.println("(One card is concealed)");
-		for (int i = 1; i < cardsInHand.size(); i++) {
-			System.out.println(cardsInHand.get(i).toString());
-		}
+	public Hand(List<Card> cards) {
+		this.cards = cards;
 	}
 
-	public void showAllCards() {
-		for (Card c : cardsInHand) {
-			System.out.println(c.toString());
-		}
+	public Hand receiveCard(Card card) {
+		cards.add(card);
+		return this;
 	}
 
-	public void receiveCard(Card c) {
-		cardsInHand.add(c);
+	public Hand receiveCards(List<Card> cards) {
+		for (Card c : cards)
+			cards.add(c);
+		return this;
 	}
 
-	public void printCardArtHorizontal() {
-		System.out.println();
-		for (int i = 0; i < 5; i++) {
-			for (Card c : cardsInHand) {
-				String[] lineArray = c.getLinesForCardArt();
-					System.out.print(lineArray[i] + "   ");
+	public List<Card> getCards() {
+		return cards;
+	}
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder("");
+		for (int i = 0; i < cards.size(); i++) {
+			sb.append(cards.get(i).toString());
+			if (i < cards.size() - 1) {
+				sb.append("\n");
 			}
-			System.out.print("\n");
 		}
-		System.out.println();
+		return sb.toString();
 	}
-
-// end special behavior	
-
-// begin getters and setters
-	public List<Card> getCardsInHand() {
-		return cardsInHand;
-	}
-
-	public void setCardsInHand(List<Card> cardsInHand) {
-		this.cardsInHand = getCardsInHand();
-	}
-// end getters and setters
-
-} // close class
+}
