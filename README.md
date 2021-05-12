@@ -22,3 +22,5 @@ Run BlackjackApplication.java.
 * Polymorphism: a `BlackjackDealer` implements additional behavior unique to blackjack, via additional method implementations or via overriding inherited methods.
 
 * Encapsulation: all fields are private and must be accessed via getter and setter methods. The only way for an object's state to change is by applying methods to the object. Each object is a "black box" that fulfills a contract of expected behavior. The user of the object does not need to know about the specific implementation.
+
+* Separation of concerns: in my initial implementation, game logic and user interface logic were muddled among `Game`, `WinStateChecker`, and `Menu` classes.  I then extensively refactored the classes to separate concerns, yielding the same user experience but making the application easier to debug and extend. `UserInterface` replaced `Menu`, display methods were moved from `BlackjackDealer`, `BlackjackHand`, etc. into `UserInterface`, and `WinStateChecker` was incorporated into `Game` as a set of private helper methods.
