@@ -66,7 +66,8 @@ public class BlackjackGame {
 				ui.pause();
 				if (player.getBlackjackHand().calculateSum() > 21) {
 					turn3PlayerBusts();
-					break;
+					gameOver = true;
+					return;
 				}
 			} else {
 				System.out.println("You stay.");
