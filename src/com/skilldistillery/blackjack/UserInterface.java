@@ -7,6 +7,9 @@ import java.util.Scanner;
 
 import com.skilldistillery.cards.AsciiArt;
 import com.skilldistillery.cards.Card;
+import com.skilldistillery.cards.Dealer;
+import com.skilldistillery.cards.Participant;
+import com.skilldistillery.cards.Player;
 import com.skilldistillery.cards.Rank;
 import com.skilldistillery.cards.Suit;
 
@@ -108,7 +111,7 @@ public class UserInterface {
 			System.out.println(hand.getCards().get(i).toString());
 		}
 		AsciiArt.printHideFirstCard(hand);
-		printBlackjackSum(hand.calculateSum());
+		System.out.println("Sum: (concealed)");
 	}
 
 	private void printBlackjackSum(int sum) {
@@ -116,7 +119,7 @@ public class UserInterface {
 		System.out.println();
 	}
 
-	public void announceWinner(int winner, BlackjackHand playerHand, BlackjackHand dealerHand) {
+	public void announceWinner(Participant winner, BlackjackDealer dealer, BlackjackPlayer player) {
 
 		System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 		System.out.println("x              GAME                 x");
@@ -126,24 +129,29 @@ public class UserInterface {
 		System.out.println();
 
 		System.out.println("Your hand: ");
-		displayHand(playerHand);
+		displayHand(player.getBlackjackHand());
 
 		System.out.println();
 
-		if (dealerHand != null) {
+		if (dealer.getBlackjackHand() != null) {
 			System.out.println("Dealer's hand: ");
-			displayHand(dealerHand);
+			displayHand(dealer.getBlackjackHand());
 		}
 
 		System.out.println();
-		if (winner == 1)
-			System.out.println("You won!!!!!!!!!");
-		if (winner == 0)
+		if (winner == null) {
 			System.out.println("It's a tie.");
-		if (winner == -1)
-			System.out.println("Dealer won.");
-		System.out.println();
-		System.out.println();
+		}
+
+		if (winner != null) {
+			if (winner.equals(player)) {
+				System.out.println("You won!!!!!!!!!");
+			}
+			if (winner.equals(dealer)) {
+				System.out.println("Dealer won.");
+			}
+		}
+		System.out.print("\n\n");
 	}
 
 	// Helper methods:

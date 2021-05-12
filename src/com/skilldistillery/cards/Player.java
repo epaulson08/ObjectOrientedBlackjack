@@ -1,8 +1,6 @@
 package com.skilldistillery.cards;
 
-public abstract class Player {
-	private boolean winner = false;
-	private boolean loser = false;
+public abstract class Player extends Participant {
 	private Hand hand;
 	
 	public Player() {}
@@ -11,23 +9,6 @@ public abstract class Player {
 		this.hand = hand;
 	}
 	
-// Get/set:
-	public boolean isWinner() {
-		return winner;
-	}
-	
-	public void setWinner(boolean winner) {
-		this.winner = winner;
-	}
-
-	public boolean isLoser() {
-		return loser;
-	}
-
-	public void setLoser(boolean loser) {
-		this.loser = loser;
-	}
-
 	public Hand getHand() {
 		return hand;
 	}
