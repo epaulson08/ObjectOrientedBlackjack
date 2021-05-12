@@ -107,6 +107,8 @@ public class BlackjackGame {
 	public void resetGame() {
 		gameOver = false;
 		winner = null;
+		dealer.setHand(null);
+		player.setHand(null);
 	}
 
 	// Win check logic
