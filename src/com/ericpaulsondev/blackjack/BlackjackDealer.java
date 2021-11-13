@@ -1,7 +1,7 @@
-package com.skilldistillery.blackjack;
+package com.ericpaulsondev.blackjack;
 
-import com.skilldistillery.cards.Dealer;
-import com.skilldistillery.cards.Deck;
+import com.ericpaulsondev.cards.Dealer;
+import com.ericpaulsondev.cards.Deck;
 
 public class BlackjackDealer extends Dealer {
 

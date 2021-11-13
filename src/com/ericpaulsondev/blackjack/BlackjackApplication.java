@@ -1,6 +1,4 @@
-package com.skilldistillery.blackjack;
-
-import java.util.Scanner;
+package com.ericpaulsondev.blackjack;
 
 public class BlackjackApplication {
 	

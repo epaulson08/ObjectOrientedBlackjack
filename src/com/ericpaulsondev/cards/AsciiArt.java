@@ -1,4 +1,4 @@
-package com.skilldistillery.cards;
+package com.ericpaulsondev.cards;
 
 import java.util.List;
 

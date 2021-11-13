@@ -1,6 +1,6 @@
-package com.skilldistillery.blackjack;
+package com.ericpaulsondev.blackjack;
 
-import com.skilldistillery.cards.Participant;
+import com.ericpaulsondev.cards.Participant;
 
 public class BlackjackGame {
 	private Participant winner;
@@ -30,7 +30,15 @@ public class BlackjackGame {
 
 	}
 
-	public void turn1() {
+	public void resetGame() {
+		gameOver = false;
+		winner = null;
+		dealer.setHand(null);
+		player.setHand(null);
+	}
+
+	// private methods
+	private void turn1() {
 		dealer.makeNewDeck();
 		dealer.shuffleDeck();
 
@@ -43,7 +51,7 @@ public class BlackjackGame {
 		gameOver = turn1CheckWinState();
 	}
 
-	public void turn2() {
+	private void turn2() {
 		System.out.println("Dealer deals to self:");
 		dealer.dealHandToSelf();
 
@@ -53,7 +61,7 @@ public class BlackjackGame {
 		gameOver = turn2CheckWinState();
 	}
 
-	public void turn3() {
+	private void turn3() {
 		boolean playerHits = false;
 
 		do {
@@ -79,7 +87,7 @@ public class BlackjackGame {
 		gameOver = turn3CheckWinState();
 	}
 
-	public void turn4() {
+	private void turn4() {
 
 		System.out.println("Dealer reveals cards: ");
 		ui.displayHand(dealer.getBlackjackHand());
@@ -104,14 +112,7 @@ public class BlackjackGame {
 		}
 	}
 
-	public void resetGame() {
-		gameOver = false;
-		winner = null;
-		dealer.setHand(null);
-		player.setHand(null);
-	}
-
-	// Win check logic
+	// win check logic
 	private boolean turn1CheckWinState() {
 		if (player.getBlackjackHand().calculateSum() == 21) {
 			winner = player;

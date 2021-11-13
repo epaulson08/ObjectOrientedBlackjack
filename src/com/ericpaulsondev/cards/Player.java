@@ -1,4 +1,4 @@
-package com.skilldistillery.cards;
+package com.ericpaulsondev.cards;
 
 public abstract class Player extends Participant {
 	private Hand hand;

@@ -1,17 +1,17 @@
-package com.skilldistillery.blackjack;
+package com.ericpaulsondev.blackjack;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import com.skilldistillery.cards.AsciiArt;
-import com.skilldistillery.cards.Card;
-import com.skilldistillery.cards.Dealer;
-import com.skilldistillery.cards.Participant;
-import com.skilldistillery.cards.Player;
-import com.skilldistillery.cards.Rank;
-import com.skilldistillery.cards.Suit;
+import com.ericpaulsondev.cards.AsciiArt;
+import com.ericpaulsondev.cards.Card;
+import com.ericpaulsondev.cards.Dealer;
+import com.ericpaulsondev.cards.Participant;
+import com.ericpaulsondev.cards.Player;
+import com.ericpaulsondev.cards.Rank;
+import com.ericpaulsondev.cards.Suit;
 
 public class UserInterface {
 	private Scanner scanner;

@@ -1,7 +1,7 @@
-package com.skilldistillery.blackjack;
+package com.ericpaulsondev.blackjack;
 
-import com.skilldistillery.cards.Card;
-import com.skilldistillery.cards.Hand;
+import com.ericpaulsondev.cards.Card;
+import com.ericpaulsondev.cards.Hand;
 
 public class BlackjackHand extends Hand {
 

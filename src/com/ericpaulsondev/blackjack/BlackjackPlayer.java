@@ -1,6 +1,6 @@
-package com.skilldistillery.blackjack;
+package com.ericpaulsondev.blackjack;
 
-import com.skilldistillery.cards.Player;
+import com.ericpaulsondev.cards.Player;
 
 public class BlackjackPlayer extends Player {
 
