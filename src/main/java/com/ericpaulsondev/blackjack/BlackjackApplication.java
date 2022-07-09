@@ -1,4 +1,4 @@
-package com.ericpaulsondev.blackjack;
+package main.java.com.ericpaulsondev.blackjack;
 
 public class BlackjackApplication {
 	

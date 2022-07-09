@@ -1,12 +1,11 @@
-package com.ericpaulsondev.cards;
+package main.java.com.ericpaulsondev.cards;
 
 public abstract class Dealer extends Participant {
 
 	private Deck deck;
 	private Hand hand;
 
-	public Dealer() {
-	}
+	public Dealer() { }
 
 	public Dealer(Deck deck) {
 		this.deck = deck;

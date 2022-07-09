@@ -1,12 +1,9 @@
-package com.ericpaulsondev.blackjack;
+package main.java.com.ericpaulsondev.blackjack;
 
-import com.ericpaulsondev.cards.Player;
+import main.java.com.ericpaulsondev.cards.Player;
 
 public class BlackjackPlayer extends Player {
 
-	public BlackjackPlayer() {
-	}
-	
 	public BlackjackHand getBlackjackHand() {
 		return (BlackjackHand)(this.getHand());
 	}

@@ -1,6 +1,6 @@
-package com.ericpaulsondev.blackjack;
+package main.java.com.ericpaulsondev.blackjack;
 
-import com.ericpaulsondev.cards.Participant;
+import main.java.com.ericpaulsondev.cards.Participant;
 
 public class BlackjackGame {
 	private Participant winner;

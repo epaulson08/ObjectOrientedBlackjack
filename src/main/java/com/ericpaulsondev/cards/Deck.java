@@ -1,4 +1,4 @@
-package com.ericpaulsondev.cards;
+package main.java.com.ericpaulsondev.cards;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +23,10 @@ public class Deck {
 
 	public Card getCard() {
 		return this.cards.remove(0);
+	}
+
+	public List<Card> getCards() {
+		return this.cards;
 	}
 
 	public void shuffle() {

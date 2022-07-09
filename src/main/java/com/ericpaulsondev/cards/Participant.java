@@ -1,4 +1,4 @@
-package com.ericpaulsondev.cards;
+package main.java.com.ericpaulsondev.cards;
 
 public abstract class Participant {
 	
