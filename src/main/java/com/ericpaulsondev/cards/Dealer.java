@@ -2,8 +2,8 @@ package main.java.com.ericpaulsondev.cards;
 
 public abstract class Dealer extends Participant {
 
-	private Deck deck;
-	private Hand hand;
+	protected Deck deck;
+	protected Hand hand;
 
 	public Dealer() { }
 
@@ -38,7 +38,6 @@ public abstract class Dealer extends Participant {
 		this.setHand(dealHand());
 	}
 	
-	// Get/set:
 	public Hand getHand() {
 		return hand;
 	}

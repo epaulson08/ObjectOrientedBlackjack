@@ -42,7 +42,7 @@ public class BlackjackGame {
 		dealer.makeNewDeck();
 		dealer.shuffleDeck();
 
-		System.out.println("Dealer deals to player: ");
+		ui.dealerDealsToPlayer();
 		dealer.dealHandToPlayer(player);
 
 		ui.displayHand(player.getBlackjackHand());
@@ -52,7 +52,7 @@ public class BlackjackGame {
 	}
 
 	private void turn2() {
-		System.out.println("Dealer deals to self:");
+		ui.dealerDealsToSelf();
 		dealer.dealHandToSelf();
 
 		ui.displayHandConcealFirstCard(dealer.getBlackjackHand());
@@ -69,7 +69,7 @@ public class BlackjackGame {
 
 			if (playerHits) {
 				dealer.dealHit(player.getBlackjackHand());
-				System.out.println("\n\nYou hit. Your hand now: ");
+				ui.youHit();
 				ui.displayHand(player.getBlackjackHand());
 				ui.pause();
 				if (player.getBlackjackHand().calculateSum() > 21) {
@@ -78,7 +78,7 @@ public class BlackjackGame {
 					return;
 				}
 			} else {
-				System.out.println("You stay.");
+				ui.youStay();
 				ui.pause();
 			}
 
@@ -89,12 +89,13 @@ public class BlackjackGame {
 
 	private void turn4() {
 
-		System.out.println("Dealer reveals cards: ");
+		ui.dealerRevealsCards();
 		ui.displayHand(dealer.getBlackjackHand());
 		ui.pause();
 
 		while (true) {
 			if (dealer.mustHit()) {
+				ui.dealerHits();
 				dealer.hitSelf();
 				ui.displayHand(dealer.getBlackjackHand());
 				ui.pause();
@@ -132,7 +133,7 @@ public class BlackjackGame {
 	}
 
 	private void turn3PlayerBusts() {
-		System.out.println("You bust!!");
+		ui.youBust();
 		ui.pause();
 		winner = dealer;
 		ui.announceWinner(winner, dealer, player);
@@ -153,7 +154,7 @@ public class BlackjackGame {
 	}
 
 	private void turn4DealerBusts() {
-		System.out.println("Dealer busts!!");
+		ui.dealerBusts();
 		ui.pause();
 		winner = player;
 		ui.announceWinner(winner, dealer, player);

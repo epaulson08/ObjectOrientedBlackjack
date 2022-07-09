@@ -2,7 +2,6 @@ package test.java.com.ericpaulsondev.blackjack;
 
 import main.java.com.ericpaulsondev.blackjack.BlackjackHand;
 import main.java.com.ericpaulsondev.cards.Card;
-import main.java.com.ericpaulsondev.cards.Hand;
 import main.java.com.ericpaulsondev.cards.Rank;
 import main.java.com.ericpaulsondev.cards.Suit;
 import org.junit.jupiter.api.AfterEach;

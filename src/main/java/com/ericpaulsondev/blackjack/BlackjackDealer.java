@@ -1,19 +1,8 @@
 package main.java.com.ericpaulsondev.blackjack;
 
 import main.java.com.ericpaulsondev.cards.Dealer;
-import main.java.com.ericpaulsondev.cards.Deck;
 
 public class BlackjackDealer extends Dealer {
-
-	private Deck deck;
-
-	public BlackjackDealer() {
-		this.deck = new Deck();
-	}
-
-	public BlackjackDealer(Deck deck) {
-		super(deck);
-	}
 
 	@Override
 	public BlackjackHand dealHand() {
@@ -28,7 +17,6 @@ public class BlackjackDealer extends Dealer {
 	}
 
 	public void hitSelf() {
-		System.out.println("Dealer hits: ");
 		this.getHand().receiveCard(dealCard());
 	}
 
@@ -36,9 +24,7 @@ public class BlackjackDealer extends Dealer {
 		if ((this.getBlackjackHand()).calculateSum() < 17) {
 			return true;
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 
 	public BlackjackHand getBlackjackHand() {

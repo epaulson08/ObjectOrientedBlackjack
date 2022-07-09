@@ -30,6 +30,10 @@ public class UserInterface {
 		scanner.nextLine();
 	}
 
+	public void dealerHits() {
+		println("Dealer hits.");
+	}
+
 	public boolean promptHit() {
 		println("Would you like to hit or stay?");
 		println("1: Hit");
@@ -43,6 +47,33 @@ public class UserInterface {
 		}
 	}
 
+	public void youBust() {
+		println("You bust!!");
+	}
+
+	public void youHit() {
+		println("\n\nYou hit. Your hand now: ");
+	}
+
+	public void youStay() {
+		println("You stay.");
+	}
+
+	public void dealerDealsToPlayer() {
+		println("Dealer deals to player:");
+	}
+
+	public void dealerDealsToSelf() {
+		println("Dealer deals to self:");
+	}
+
+	public void dealerBusts() {
+		println("Dealer busts!!");
+	}
+
+	public void dealerRevealsCards() {
+		println("Dealer reveals cards:");
+	}
 	public boolean promptPlayAgain() {
 		boolean playAgain = false;
 
