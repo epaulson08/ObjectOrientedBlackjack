@@ -1,175 +1,191 @@
 package main.java.com.ericpaulsondev.blackjack;
 
-import main.java.com.ericpaulsondev.cards.Participant;
-
 public class BlackjackGame {
-	private Participant winner;
-	private BlackjackDealer dealer;
-	private BlackjackPlayer player;
-	private UserInterface ui;
-	private boolean gameOver = false;
+    private BlackjackParticipant winner;
+    private BlackjackDealer dealer;
+    private BlackjackPlayer player;
+    private UserInterface ui;
+    private boolean gameOver = false;
 
-	public BlackjackGame(UserInterface ui) {
-		this.ui = ui;
-		dealer = new BlackjackDealer();
-		player = new BlackjackPlayer();
-	}
+    public BlackjackGame() {
+    }
 
-	public void play() {
+    public BlackjackGame(UserInterface ui) {
+        this.ui = ui;
+        dealer = new BlackjackDealer();
+        player = new BlackjackPlayer();
+    }
 
-		turn1();
+    public void play() {
 
-		if (!gameOver)
-			turn2();
+        dealToPlayer();
 
-		if (!gameOver)
-			turn3();
+        if (!gameOver) {
+            dealToDealer();
+        }
 
-		if (!gameOver)
-			turn4();
+        if (!gameOver) {
+            letPlayerHit();
+        }
 
-	}
+        if (!gameOver) {
+            checkHands();
+        }
 
-	public void resetGame() {
-		gameOver = false;
-		winner = null;
-		dealer.setHand(null);
-		player.setHand(null);
-	}
+        if (!gameOver) {
+            letDealerHit();
+        }
 
-	// private methods
-	private void turn1() {
-		dealer.makeNewDeck();
-		dealer.shuffleDeck();
+        if (!gameOver) {
+            finishGame();
+        }
+    }
 
-		ui.dealerDealsToPlayer();
-		dealer.dealHandToPlayer(player);
+    public void resetGame() {
+        gameOver = false;
+        winner = null;
+        dealer.setHand(null);
+        player.setHand(null);
+    }
 
-		ui.displayHand(player.getBlackjackHand());
-		ui.pause();
+    private void dealToPlayer() {
+        dealer.makeNewDeck();
+        dealer.shuffleDeck();
 
-		gameOver = turn1CheckWinState();
-	}
+        ui.dealerDealsToPlayer();
+        dealer.dealHandTo(player);
 
-	private void turn2() {
-		ui.dealerDealsToSelf();
-		dealer.dealHandToSelf();
+        ui.displayHand(player);
+        ui.pause();
 
-		ui.displayHandConcealFirstCard(dealer.getBlackjackHand());
-		ui.pause();
+        if (player.has21()) {
+            playerWins();
+        }
+    }
 
-		gameOver = turn2CheckWinState();
-	}
+    private void dealToDealer() {
+        ui.dealerDealsToSelf();
+        dealer.dealHandTo(dealer);
 
-	private void turn3() {
-		boolean playerHits = false;
+        ui.displayHandConcealFirstCard(dealer);
+        ui.pause();
 
-		do {
-			playerHits = ui.promptHit();
+        if (dealer.has21()) {
+            dealerWins();
+        }
+    }
 
-			if (playerHits) {
-				dealer.dealHit(player.getBlackjackHand());
-				ui.youHit();
-				ui.displayHand(player.getBlackjackHand());
-				ui.pause();
-				if (player.getBlackjackHand().calculateSum() > 21) {
-					turn3PlayerBusts();
-					gameOver = true;
-					return;
-				}
-			} else {
-				ui.youStay();
-				ui.pause();
-			}
+    private void letPlayerHit() {
+        while (true) {
 
-		} while (playerHits);
+            boolean playerHits = ui.promptHit();
 
-		gameOver = turn3CheckWinState();
-	}
+            if (!playerHits) {
+                ui.youStay();
+                ui.pause();
+                return;
+            }
 
-	private void turn4() {
+            dealer.dealHit(player);
 
-		ui.dealerRevealsCards();
-		ui.displayHand(dealer.getBlackjackHand());
-		ui.pause();
+            ui.youHit();
+            ui.displayHand(player);
+            ui.pause();
 
-		while (true) {
-			if (dealer.mustHit()) {
-				ui.dealerHits();
-				dealer.hitSelf();
-				ui.displayHand(dealer.getBlackjackHand());
-				ui.pause();
+            if (player.isBusted()) {
+                playerBusts();
+                return;
+            }
 
-				if (dealer.getBlackjackHand().calculateSum() > 21) {
-					turn4DealerBusts();
-					return;
-				}
+            if (player.has21()) {
+                playerWins();
+                return;
+            }
+        }
+    }
 
-			} else {
-				winner = compareHands(dealer, player);
-				ui.announceWinner(winner, dealer, player);
-				return;
-			}
-		}
-	}
+    private void checkHands() {
+        if (dealerHasHigherSum()) {
+            dealerWins();
+        }
+    }
 
-	// win check logic
-	private boolean turn1CheckWinState() {
-		if (player.getBlackjackHand().calculateSum() == 21) {
-			winner = player;
-			ui.announceWinner(winner, dealer, player);
-			return true;
-		}
-		return false;
-	}
+    private boolean dealerHasHigherSum() {
+        if (getParticipantWithHigherSum(dealer, player).equals(dealer)) {
+            return true;
+        }
+        return false;
+    }
 
-	private boolean turn2CheckWinState() {
-		if (dealer.getBlackjackHand().calculateSum() == 21) {
-			winner = dealer;
-			ui.announceWinner(winner, dealer, player);
-			return true;
-		}
-		return false;
-	}
+    private void letDealerHit() {
+        ui.dealerRevealsCards();
+        ui.displayHand(dealer);
+        ui.pause();
 
-	private void turn3PlayerBusts() {
-		ui.youBust();
-		ui.pause();
-		winner = dealer;
-		ui.announceWinner(winner, dealer, player);
-	}
+        while (dealer.mustHit()) {
+            ui.dealerHits();
+            dealer.dealHit(dealer);
 
-	private boolean turn3CheckWinState() {
-		if (player.getBlackjackHand().calculateSum() == 21) {
-			winner = player;
-			ui.announceWinner(winner, dealer, player);
-			return true;
-		} else if (dealer.getBlackjackHand().calculateSum() > player.getBlackjackHand().calculateSum()) {
-			winner = dealer;
-			ui.announceWinner(winner, dealer, player);
-			return true;
-		} else {
-			return false;
-		}
-	}
+            ui.displayHand(dealer);
+            ui.pause();
 
-	private void turn4DealerBusts() {
-		ui.dealerBusts();
-		ui.pause();
-		winner = player;
-		ui.announceWinner(winner, dealer, player);
-	}
+            if (dealer.isBusted()) {
+                dealerBusts();
+                return;
+            }
+        }
+    }
 
-	private Participant compareHands(BlackjackDealer dealer, BlackjackPlayer player) {
-		int dealerSum = (dealer.getBlackjackHand().calculateSum());
-		int playerSum = (player.getBlackjackHand().calculateSum());
+    private void finishGame() {
+        gameOver = true;
+        winner = getParticipantWithHigherSum(dealer, player);
 
-		if (dealerSum > playerSum)
-			return dealer;
-		else if (dealerSum == playerSum)
-			return null;
-		else
-			return player;
-	}
+        ui.announceWinner(winner, dealer, player);
+    }
+
+    private void playerBusts() {
+        gameOver = true;
+        winner = dealer;
+
+        ui.youBust();
+        ui.pause();
+        ui.announceWinner(winner, dealer, player);
+    }
+
+    private void dealerBusts() {
+        gameOver = true;
+        winner = player;
+
+        ui.dealerBusts();
+        ui.pause();
+        ui.announceWinner(winner, dealer, player);
+    }
+
+    private void playerWins() {
+        gameOver = true;
+        winner = player;
+
+        ui.announceWinner(winner, dealer, player);
+    }
+
+    private void dealerWins() {
+        gameOver = true;
+        winner = dealer;
+
+        ui.announceWinner(winner, dealer, player);
+    }
+
+    private BlackjackParticipant getParticipantWithHigherSum(BlackjackParticipant p1, BlackjackParticipant p2) {
+        int p1Sum = p1.getBlackjackHand().calculateSum();
+        int p2Sum = p2.getBlackjackHand().calculateSum();
+
+        if (p2Sum > p1Sum) {
+            return p2;
+        }
+        if (p1Sum > p2Sum) {
+            return p1;
+        }
+        return null;
+    }
 
 }

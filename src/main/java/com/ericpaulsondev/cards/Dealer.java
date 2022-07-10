@@ -3,7 +3,6 @@ package main.java.com.ericpaulsondev.cards;
 public abstract class Dealer extends Participant {
 
 	protected Deck deck;
-	protected Hand hand;
 
 	public Dealer() { }
 
@@ -29,21 +28,10 @@ public abstract class Dealer extends Participant {
 	}
 	
 	public abstract Hand dealHand();
-	
-	public void dealHandToPlayer(Player player) {
-		player.setHand(dealHand());
-	}
-	
-	public void dealHandToSelf() {
-		this.setHand(dealHand());
-	}
-	
-	public Hand getHand() {
-		return hand;
+
+	public Participant dealHandTo(Participant participant) {
+		participant.setHand(dealHand());
+		return participant;
 	}
 
-	public void setHand(Hand hand) {
-		this.hand = hand;
-	}
-	
 }

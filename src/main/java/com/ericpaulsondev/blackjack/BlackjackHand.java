@@ -23,4 +23,12 @@ public class BlackjackHand extends Hand {
 		return sum;
 	}
 
+	public boolean isBust() {
+		return calculateSum() > 21;
+	}
+
+	public boolean is21() {
+		return calculateSum() == 21;
+	}
+
 }

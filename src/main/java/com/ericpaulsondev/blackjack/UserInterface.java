@@ -39,12 +39,10 @@ public class UserInterface {
 		println("1: Hit");
 		println("2: Stay");
 
-		if (validateInput() == 1) {
+		if (input() == 1) {
 			return true;
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 
 	public void youBust() {
@@ -105,20 +103,25 @@ public class UserInterface {
 		this.scanner = null;
 	}
 
+	public void displayHand(BlackjackParticipant participant) {
+		displayHand(participant.getBlackjackHand());
+	}
+
 	public void displayHand(BlackjackHand hand) {
 		println(hand.toString());
 		println(hand.toPrettyString());
 		println("Sum: " + hand.calculateSum() + "\n");
 	}
 
-	public void displayHandConcealFirstCard(BlackjackHand hand) {
+	public void displayHandConcealFirstCard(BlackjackParticipant participant) {
+		BlackjackHand hand = participant.getBlackjackHand();
 		println("(One card is concealed)");
 		hand.toString();
 		hand.toPrettyStringHideFirstCard();
 		println("Sum: (concealed)");
 	}
 
-	public void announceWinner(Participant winner, BlackjackDealer dealer, BlackjackPlayer player) {
+	public void announceWinner(BlackjackParticipant winner, BlackjackDealer dealer, BlackjackPlayer player) {
 		println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 		println("x              GAME                 x");
 		println("x                                   x");
@@ -127,13 +130,13 @@ public class UserInterface {
 		println();
 
 		println("Your hand: ");
-		displayHand(player.getBlackjackHand());
+		displayHand(player);
 
 		println();
 
 		if (dealer.getBlackjackHand() != null) {
 			println("Dealer's hand: ");
-			displayHand(dealer.getBlackjackHand());
+			displayHand(dealer);
 		}
 
 		println();
@@ -162,7 +165,7 @@ public class UserInterface {
 		return welcomeCards;
 	}
 
-	private int validateInput() {
+	private int input() {
 		boolean invalidInput = false;
 		boolean keepGoing = true;
 		int input = -1;
@@ -170,14 +173,14 @@ public class UserInterface {
 		while (keepGoing) {
 			do {
 				try {
-					System.out.print(">>> ");
+					print(">>> ");
 					input = scanner.nextInt();
 					invalidInput = false;
 				} catch (NumberFormatException nfe) {
-					System.out.println("Sorry, I do not recognize that input. Please enter \"1\" or \"2\".");
+					println("Sorry, I do not recognize that input. Please enter \"1\" or \"2\".");
 					invalidInput = true;
 				} catch (InputMismatchException ime) {
-					System.out.println("Sorry, I do not recognize that input. Please enter \"1\" or \"2\".");
+					println("Sorry, I do not recognize that input. Please enter \"1\" or \"2\".");
 					invalidInput = true;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -192,7 +195,7 @@ public class UserInterface {
 				keepGoing = false;
 				break;
 			default:
-				System.out.println("That was not one of the choices. Please enter 1 or 2.");
+				println("That was not one of the choices. Please enter 1 or 2.");
 				keepGoing = true;
 				break;
 			}
@@ -200,6 +203,9 @@ public class UserInterface {
 		return input;
 	}
 
+	private void print(String msg) {
+		System.out.print(msg);
+	}
 	private void println() {
 		System.out.println();
 	}
