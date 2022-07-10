@@ -4,8 +4,8 @@ import main.java.com.ericpaulsondev.blackjack.BlackjackHand;
 import main.java.com.ericpaulsondev.cards.Card;
 import main.java.com.ericpaulsondev.cards.Rank;
 import main.java.com.ericpaulsondev.cards.Suit;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,12 +16,30 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BlackjackHandTest {
 
-    @BeforeEach
-    void setUp() {
-    }
+    static String expectedThreeCardsDisplay;
+    static String expectedThreeCardsConcealFirstDisplay;
 
-    @AfterEach
-    void tearDown() {
+    @BeforeAll
+    static void beforeAll() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        sb.append("xxxxxxx   xxxxxxx   xxxxxxx   \n");
+        sb.append("x  A  x   x  8  x   x  X  x   \n");
+        sb.append("x  \u2660  x   x  \u2663  x   x  \u2666  x   \n");
+        sb.append("x  A  x   x  8  x   x  X  x   \n");
+        sb.append("xxxxxxx   xxxxxxx   xxxxxxx   \n");
+        sb.append("\n");
+        expectedThreeCardsDisplay = sb.toString();
+
+        sb = new StringBuilder();
+        sb.append("\n");
+        sb.append("xxxxxxx   xxxxxxx   xxxxxxx   \n");
+        sb.append("xxxxxxx   x  8  x   x  X  x   \n");
+        sb.append("xxxxxxx   x  \u2663  x   x  \u2666  x   \n");
+        sb.append("xxxxxxx   x  8  x   x  X  x   \n");
+        sb.append("xxxxxxx   xxxxxxx   xxxxxxx   \n");
+        sb.append("\n");
+        expectedThreeCardsConcealFirstDisplay = sb.toString();
     }
 
     @Test
@@ -114,5 +132,25 @@ public class BlackjackHandTest {
 
         hand2.receiveCard(new Card(Rank.ACE, Suit.HEARTS));
         assertTrue(hand2.getCards().size() == 2);
+    }
+
+    @Test
+    @DisplayName("Hand with three cards displays as expected")
+    void testPrettyStringThreeCards() {
+        String expected = expectedThreeCardsDisplay;
+        String expectedConcealed = expectedThreeCardsConcealFirstDisplay;
+        String actual = "";
+
+        ArrayList<Card> threeCards = new ArrayList<>();
+        threeCards.add(new Card(Rank.ACE, Suit.SPADES));
+        threeCards.add(new Card(Rank.EIGHT, Suit.CLUBS));
+        threeCards.add(new Card(Rank.TEN, Suit.DIAMONDS));
+        BlackjackHand threeCardsHand = new BlackjackHand(threeCards);
+
+        actual = threeCardsHand.toPrettyString();
+        assertEquals(expected, actual);
+
+        actual = threeCardsHand.toPrettyStringHideFirstCard();
+        assertEquals(expectedConcealed, actual);
     }
 }
