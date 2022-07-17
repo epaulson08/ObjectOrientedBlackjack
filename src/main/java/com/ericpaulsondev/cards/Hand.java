@@ -55,14 +55,30 @@ public abstract class Hand {
                 String[] lines = card.toPrinterLineArray();
                 if (card.equals(cards.get(0))) {
                     sb.append("xxxxxxx   ");
-                }
-                else {
+                } else {
                     sb.append(lines[i] + "   ");
                 }
             }
             sb.append("\n");
         }
         sb.append("\n");
+        return sb.toString();
+    }
+
+    public String toStringHideFirstCard() {
+        StringBuilder sb = new StringBuilder("(First card is concealed)\n");
+        int handSize = cards.size();
+
+        if (handSize <= 1) {
+            return sb.toString();
+        }
+
+        for (int i = 1; i < handSize; i++) {
+            sb.append(this.cards.get(1).toString());
+            if (i < handSize - 1) {
+                sb.append("\n");
+            }
+        }
         return sb.toString();
     }
 
