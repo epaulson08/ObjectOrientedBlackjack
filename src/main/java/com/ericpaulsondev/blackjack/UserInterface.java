@@ -1,5 +1,6 @@
 package main.java.com.ericpaulsondev.blackjack;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -10,8 +11,8 @@ import main.java.com.ericpaulsondev.cards.*;
 public class UserInterface {
     private Scanner scanner;
 
-    public UserInterface() {
-        this.scanner = new Scanner(System.in);
+    public UserInterface(InputStream in) {
+        this.scanner = new Scanner(in);
     }
 
     public void welcome() {
@@ -74,7 +75,7 @@ public class UserInterface {
     }
 
     public boolean promptPlayAgain() {
-        System.out.print("Great game! Want to play another round? (Y/N) >>> ");
+        print("Great game! Want to play another round? (Y/N) >>> ");
         switch (scanner.nextLine()) {
             case "Y":
             case "y":

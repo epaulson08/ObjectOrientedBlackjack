@@ -51,10 +51,9 @@ public class BlackjackGame {
     private void dealToPlayer() {
         dealer.makeNewDeck();
         dealer.shuffleDeck();
-
-        ui.dealerDealsToPlayer();
         dealer.dealHandTo(player);
 
+        ui.dealerDealsToPlayer();
         ui.displayHand(player);
         ui.pause();
 
@@ -64,9 +63,9 @@ public class BlackjackGame {
     }
 
     private void dealToDealer() {
-        ui.dealerDealsToSelf();
         dealer.dealHandTo(dealer);
 
+        ui.dealerDealsToSelf();
         ui.displayHandConcealFirstCard(dealer);
         ui.pause();
 
@@ -77,7 +76,6 @@ public class BlackjackGame {
 
     private void letPlayerHit() {
         while (true) {
-
             boolean playerHits = ui.promptHit();
 
             if (!playerHits) {
@@ -108,13 +106,6 @@ public class BlackjackGame {
         if (dealerHasHigherSum()) {
             dealerWins();
         }
-    }
-
-    private boolean dealerHasHigherSum() {
-        if (getParticipantWithHigherSum(dealer, player).equals(dealer)) {
-            return true;
-        }
-        return false;
     }
 
     private void letDealerHit() {
@@ -173,6 +164,13 @@ public class BlackjackGame {
         winner = dealer;
 
         ui.announceWinner(winner, dealer, player);
+    }
+
+    private boolean dealerHasHigherSum() {
+        if (getParticipantWithHigherSum(dealer, player).equals(dealer)) {
+            return true;
+        }
+        return false;
     }
 
     private BlackjackParticipant getParticipantWithHigherSum(BlackjackParticipant p1, BlackjackParticipant p2) {

@@ -7,7 +7,7 @@ public class BlackjackApplication {
 	}
 
 	public void run() {
-		UserInterface ui = new UserInterface();
+		UserInterface ui = new UserInterface(System.in);
 		BlackjackGame game = new BlackjackGame(ui);
 		boolean playAgain = false;
 
