@@ -2,6 +2,7 @@ package test.java.com.ericpaulsondev.blackjack;
 
 import main.java.com.ericpaulsondev.blackjack.BlackjackDealer;
 import main.java.com.ericpaulsondev.blackjack.BlackjackHand;
+import main.java.com.ericpaulsondev.blackjack.BlackjackPlayer;
 import main.java.com.ericpaulsondev.cards.Card;
 import main.java.com.ericpaulsondev.cards.Deck;
 import main.java.com.ericpaulsondev.cards.Rank;
@@ -110,4 +111,39 @@ public class BlackjackDealerTest {
         BlackjackHand hand = dealer.dealHand();
         assertEquals(2, hand.size());
     }
+
+    @Test
+    @DisplayName("dealHandTo(participant) gives participant two cards")
+    void dealHandToParticipantGivesTwoCards() {
+        dealer.makeNewDeck();
+        dealer.dealHandTo(dealer);
+        assertEquals(2, dealer.getBlackjackHand().size());
+
+        dealer.makeNewDeck();
+        BlackjackPlayer player = new BlackjackPlayer();
+        dealer.dealHandTo(player);
+        assertEquals(2, player.getBlackjackHand().size());
+    }
+
+    @Test
+    @DisplayName("dealHit() increases hand size by 1")
+    void dealHitIncreasesHandSizeBy1() {
+        dealer.makeNewDeck();
+        dealer.dealHandTo(dealer);
+        assertEquals(2, dealer.getBlackjackHand().size());
+        dealer.dealHit(dealer);
+        assertEquals(3, dealer.getBlackjackHand().size());
+        dealer.dealHit(dealer);
+        assertEquals(4, dealer.getBlackjackHand().size());
+
+        BlackjackPlayer player = new BlackjackPlayer();
+        dealer.makeNewDeck();
+        dealer.dealHandTo(player);
+        assertEquals(2, player.getBlackjackHand().size());
+        dealer.dealHit(player);
+        assertEquals(3, player.getBlackjackHand().size());
+        dealer.dealHit(player);
+        assertEquals(4, player.getBlackjackHand().size());
+    }
 }
+
