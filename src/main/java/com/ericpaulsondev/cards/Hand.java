@@ -17,6 +17,10 @@ public abstract class Hand {
         this.cards = cards;
     }
 
+    public int size() {
+        return cards.size();
+    }
+
     public Hand receiveCard(Card card) {
         cards.add(card);
         return this;

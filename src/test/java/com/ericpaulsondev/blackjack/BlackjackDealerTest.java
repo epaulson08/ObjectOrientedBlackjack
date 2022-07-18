@@ -3,6 +3,7 @@ package test.java.com.ericpaulsondev.blackjack;
 import main.java.com.ericpaulsondev.blackjack.BlackjackDealer;
 import main.java.com.ericpaulsondev.blackjack.BlackjackHand;
 import main.java.com.ericpaulsondev.cards.Card;
+import main.java.com.ericpaulsondev.cards.Deck;
 import main.java.com.ericpaulsondev.cards.Rank;
 import main.java.com.ericpaulsondev.cards.Suit;
 import org.junit.jupiter.api.AfterEach;
@@ -102,4 +103,11 @@ public class BlackjackDealerTest {
         sum25Cards.add(new Card(Rank.QUEEN, Suit.SPADES));
     }
 
+    @Test
+    @DisplayName("dealHand returns two cards")
+    void dealHandGivesTwoCards() {
+        dealer.makeNewDeck();
+        BlackjackHand hand = dealer.dealHand();
+        assertEquals(2, hand.size());
+    }
 }
